@@ -20,8 +20,9 @@ PROXY = {
     }
 }
 
-operations = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv, '^': operator.pow}
-
+operations = {'+': operator.add, '-': operator.sub,
+              '*': operator.mul, '/': operator.truediv,
+              '^': operator.pow}
 
 def calc(bot, update):
 
@@ -31,8 +32,10 @@ def calc(bot, update):
 
     input = update.message.text.split()[1]
 
+    operator_found = False
     for op_key in operations.keys():
         if op_key in input:
+            operator_found = True
             arg1, arg2 = input.split(op_key)
             if arg1=='' or arg2=='':
                 update.message.reply_text('Error: two operands must be provided!')
@@ -42,6 +45,10 @@ def calc(bot, update):
                 return None
             result = operations[op_key](float(arg1), float(arg2))
             update.message.reply_text(result)
+            break
+
+    if not operator_found:
+        update.message.reply_text('Error: no known arithmetical operator found!')
 
 def main():
     # mybot = Updater("1050767852:AAGJLxpdMCIB3q_m3TtHrWaMUTj15-Nvfps", request_kwargs=PROXY)
