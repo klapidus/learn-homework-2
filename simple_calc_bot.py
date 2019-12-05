@@ -28,7 +28,7 @@ def calc(bot, update):
 
     if len( update.message.text.split() ) < 2:
         update.message.reply_text('Error: no expression provided!')
-        return None
+        return False
 
     input = update.message.text.split()[1]
 
@@ -39,16 +39,17 @@ def calc(bot, update):
             arg1, arg2 = input.split(op_key)
             if arg1=='' or arg2=='':
                 update.message.reply_text('Error: two operands must be provided!')
-                return None
+                return False
             if float(arg2) == 0 and op_key == '/':
                 update.message.reply_text('Error: attempting division by 0!')
-                return None
+                return False
             result = operations[op_key](float(arg1), float(arg2))
             update.message.reply_text(result)
             break
 
     if not operator_found:
         update.message.reply_text('Error: no known arithmetical operator found!')
+        return False
 
 def main():
     # mybot = Updater("1050767852:AAGJLxpdMCIB3q_m3TtHrWaMUTj15-Nvfps", request_kwargs=PROXY)
